@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Controle de Validade</string>
+    <string name="cadastro_produto">Cadastro de Produto</string>
+    <string name="nome_produto">Nome do produto</string>
+    <string name="quantidade">Quantidade</string>
+    <string name="data_validade">Data de validade</string>
+    <string name="categoria">Categoria</string>
+    <string name="local_armazenamento">Onde o produto está armazenado?</string>
+    <string name="geladeira">Geladeira</string>
+    <string name="freezer">Freezer</string>
+    <string name="armario">Armário</string>
+    <string name="produto_aberto">Produto já foi aberto</string>
+    <string name="limpar">Limpar</string>
+    <string name="salvar">Salvar</string>
+
+    <string-array name="categorias">
+        <item>Selecione uma categoria</item>
+        <item>Alimento</item>
+        <item>Bebida</item>
+        <item>Higiene</item>
+        <item>Limpeza</item>
+        <item>Outro</item>
+    </string-array>
+
+    <string name="formulario_limpo">Formulário limpo.</string>
+    <string name="informe_nome">Informe o nome do produto.</string>
+    <string name="informe_quantidade">Informe a quantidade.</string>
+    <string name="informe_data_validade">Informe a data de validade.</string>
+    <string name="selecione_armazenamento">Selecione onde o produto está armazenado.</string>
+    <string name="selecione_categoria">Selecione uma categoria.</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
+    <string name="produto_cadastrado">Produto cadastrado: %1$s\nQuantidade: %2$s | Categoria: %3$s\nArmazenamento: %4$s | Aberto: %5$s</string>
+
+    <!-- Recursos mantidos para os fragments gerados pelo template. -->
+    <string name="action_settings">Settings</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="lorem_ipsum">Conteúdo de exemplo do template.</string>
+</resources>
