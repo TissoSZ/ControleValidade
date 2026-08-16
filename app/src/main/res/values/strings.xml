@@ -32,6 +32,11 @@
     <string name="nao">Não</string>
     <string name="produto_cadastrado">Produto cadastrado: %1$s\nQuantidade: %2$s | Categoria: %3$s\nArmazenamento: %4$s | Aberto: %5$s</string>
 
+    <string name="categoria_produto">Categoria: %1$s</string>
+    <string name="validade_produto">Validade: %1$s</string>
+    <string name="local_produto">Local: %1$s</string>
+    <string name="produto_selecionado">Produto: %1$s\nValidade: %2$s</string>
+
     <!-- Recursos mantidos para os fragments gerados pelo template. -->
     <string name="action_settings">Settings</string>
     <string name="first_fragment_label">First Fragment</string>
