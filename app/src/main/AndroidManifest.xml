@@ -12,13 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ControleValidade">
         <activity
+            android:name=".AutoriaActivity"
+            android:exported="false"
+            android:label="@string/titulo_autoria" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.ControleValidade"
+            android:exported="false"
+            android:label="@string/cadastro_produto"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ListagemProdutosActivity"
             android:exported="true"
+            android:label="@string/titulo_listagem"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

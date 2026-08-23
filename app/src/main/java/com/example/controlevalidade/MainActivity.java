@@ -1,6 +1,7 @@
 package com.example.controlevalidade;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,11 +14,19 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Calendar;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String EXTRA_NOME = "nome";
+    public static final String EXTRA_CATEGORIA = "categoria";
+    public static final String EXTRA_VALIDADE = "validade";
+    public static final String EXTRA_LOCAL = "local";
 
     private EditText editTextNome;
     private EditText editTextQuantidade;
@@ -30,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        aplicarInsets(findViewById(R.id.scrollViewCadastro));
 
         editTextNome = findViewById(R.id.editTextNome);
         editTextQuantidade = findViewById(R.id.editTextQuantidade);
@@ -84,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         String quantidade = editTextQuantidade.getText().toString().trim();
         String dataValidade = editTextDataValidade.getText().toString().trim();
         String categoria = spinnerCategoria.getSelectedItem().toString();
-        boolean produtoAberto = checkBoxAberto.isChecked();
         int armazenamentoSelecionadoId = radioGroupArmazenamento.getCheckedRadioButtonId();
 
         if (nome.isEmpty()) {
@@ -114,21 +128,45 @@ public class MainActivity extends AppCompatActivity {
 
         RadioButton radioButtonArmazenamento = findViewById(armazenamentoSelecionadoId);
         String armazenamento = radioButtonArmazenamento.getText().toString();
-        String statusAberto = getString(produtoAberto ? R.string.sim : R.string.nao);
-        String confirmacao = getString(
-                R.string.produto_cadastrado,
-                nome,
-                quantidade,
-                categoria,
-                armazenamento,
-                statusAberto
-        );
 
-        Toast.makeText(this, confirmacao, Toast.LENGTH_SHORT).show();
+        Intent resultado = new Intent();
+        resultado.putExtra(EXTRA_NOME, nome);
+        resultado.putExtra(EXTRA_CATEGORIA, categoria);
+        resultado.putExtra(EXTRA_VALIDADE, dataValidade);
+        resultado.putExtra(EXTRA_LOCAL, armazenamento);
+        setResult(RESULT_OK, resultado);
+        finish();
     }
 
     private void mostrarErroComFoco(int mensagemId, View campo) {
         Toast.makeText(this, mensagemId, Toast.LENGTH_SHORT).show();
         campo.requestFocus();
+    }
+
+    private void aplicarInsets(View view) {
+        int paddingLeft = view.getPaddingLeft();
+        int paddingTop = view.getPaddingTop();
+        int paddingRight = view.getPaddingRight();
+        int paddingBottom = view.getPaddingBottom();
+
+        ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.navigationBars()
+                            | WindowInsetsCompat.Type.displayCutout()
+            );
+            v.setPadding(
+                    paddingLeft + insets.left,
+                    paddingTop,
+                    paddingRight + insets.right,
+                    paddingBottom + insets.bottom
+            );
+            return windowInsets;
+        });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

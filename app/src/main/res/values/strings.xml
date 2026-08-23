@@ -37,6 +37,21 @@
     <string name="local_produto">Local: %1$s</string>
     <string name="produto_selecionado">Produto: %1$s\nValidade: %2$s</string>
 
+    <string name="adicionar">Adicionar</string>
+    <string name="sobre">Sobre</string>
+    <string name="titulo_listagem">Produtos</string>
+    <string name="titulo_autoria">Sobre o Aplicativo</string>
+    <string name="instituicao_utfpr">Universidade Tecnológica Federal do Paraná - UTFPR</string>
+    <string name="descricao_logo_utfpr">Logo da Universidade Tecnológica Federal do Paraná</string>
+    <string name="rotulo_aluno">Aluno</string>
+    <string name="nome_aluno">Matheus Espindola dos Santos</string>
+    <string name="rotulo_curso_disciplina">Curso/Disciplina</string>
+    <string name="curso_disciplina">CETEJ36 - Desenvolvimento Java Para Dispositivos Móveis - JAVA_XXXIII (2025_02)</string>
+    <string name="rotulo_email">E-mail</string>
+    <string name="email_aluno">matheussantos.1996@alunos.utfpr.edu.br</string>
+    <string name="rotulo_descricao">Descrição do aplicativo</string>
+    <string name="descricao_aplicativo">Aplicativo para cadastro e controle da validade de alimentos e produtos domésticos, auxiliando na organização de itens armazenados em locais como geladeira, freezer e armário.</string>
+
     <!-- Recursos mantidos para os fragments gerados pelo template. -->
     <string name="action_settings">Settings</string>
     <string name="first_fragment_label">First Fragment</string>
