@@ -1,7 +1,1 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.ControleValidade" parent="Theme.Material3.DayNight">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-    </style>
-</resources>
+<resources><style name="Base.Theme.ControleValidade" parent="Theme.Material3.Light"><item name="colorPrimary">@color/md_primary</item><item name="android:colorBackground">@color/md_surface</item><item name="actionBarStyle">@style/Widget.ControleValidade.ActionBar</item><item name="android:statusBarColor">@color/md_surface</item><item name="android:windowLightStatusBar">true</item></style></resources>

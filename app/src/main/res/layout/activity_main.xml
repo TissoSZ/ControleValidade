@@ -1,129 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollViewCadastro"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
-
-        <TextView
-            android:id="@+id/textViewTitulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:text="@string/cadastro_produto"
-            android:textAppearance="?attr/textAppearanceHeadlineMedium"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/editTextNome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/nome_produto"
-            android:inputType="textCapSentences"
-            android:maxLines="1" />
-
-        <EditText
-            android:id="@+id/editTextQuantidade"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="@string/quantidade"
-            android:inputType="numberDecimal"
-            android:maxLines="1" />
-
-        <EditText
-            android:id="@+id/editTextDataValidade"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:cursorVisible="false"
-            android:hint="@string/data_validade"
-            android:inputType="none"
-            android:maxLines="1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:labelFor="@id/spinnerCategoria"
-            android:text="@string/categoria"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinnerCategoria"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/local_armazenamento"
-            android:textStyle="bold" />
-
-        <RadioGroup
-            android:id="@+id/radioGroupArmazenamento"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/radioButtonGeladeira"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/geladeira" />
-
-            <RadioButton
-                android:id="@+id/radioButtonFreezer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/freezer" />
-
-            <RadioButton
-                android:id="@+id/radioButtonArmario"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/armario" />
-        </RadioGroup>
-
-        <CheckBox
-            android:id="@+id/checkBoxAberto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/produto_aberto" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonLimpar"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:text="@string/limpar" />
-
-            <Button
-                android:id="@+id/buttonSalvar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:text="@string/salvar" />
-        </LinearLayout>
-
-    </LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/scrollViewCadastro" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/md_surface" android:fillViewport="true">
+ <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="16dp" android:paddingTop="8dp" android:paddingRight="16dp" android:paddingBottom="32dp">
+  <TextView style="@style/FormLabel" android:text="@string/nome_produto_caps"/>
+  <com.google.android.material.textfield.TextInputLayout style="@style/FormField" android:layout_marginTop="6dp" app:boxCornerRadiusBottomEnd="12dp" app:boxCornerRadiusBottomStart="12dp" app:boxCornerRadiusTopEnd="12dp" app:boxCornerRadiusTopStart="12dp"><com.google.android.material.textfield.TextInputEditText android:id="@+id/editTextNome" style="@style/FormInput" android:hint="@string/exemplo_nome" android:inputType="textCapSentences" android:maxLines="1"/></com.google.android.material.textfield.TextInputLayout>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:orientation="horizontal">
+   <LinearLayout android:layout_width="110dp" android:layout_height="wrap_content" android:orientation="vertical"><TextView style="@style/FormLabel" android:text="@string/quantidade_caps"/><com.google.android.material.textfield.TextInputLayout style="@style/FormField" android:layout_marginTop="6dp"><com.google.android.material.textfield.TextInputEditText android:id="@+id/editTextQuantidade" style="@style/FormInput" android:inputType="numberDecimal" android:maxLines="1"/></com.google.android.material.textfield.TextInputLayout></LinearLayout>
+   <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginLeft="12dp" android:layout_weight="1" android:orientation="vertical"><TextView style="@style/FormLabel" android:text="@string/unidade_caps"/><com.google.android.material.textfield.TextInputLayout style="@style/FormField" android:layout_marginTop="6dp" app:endIconMode="dropdown_menu"><AutoCompleteTextView android:id="@+id/spinnerUnidade" style="@style/FormInput" android:inputType="none"/></com.google.android.material.textfield.TextInputLayout></LinearLayout>
+  </LinearLayout>
+  <TextView style="@style/FormLabel" android:layout_marginTop="20dp" android:text="@string/data_validade_caps"/>
+  <com.google.android.material.textfield.TextInputLayout style="@style/FormField" android:layout_marginTop="6dp" app:endIconDrawable="@drawable/ic_calendar_24" app:endIconMode="custom"><com.google.android.material.textfield.TextInputEditText android:id="@+id/editTextDataValidade" style="@style/FormInput" android:cursorVisible="false" android:focusable="false" android:hint="dd/mm/aaaa"/></com.google.android.material.textfield.TextInputLayout>
+  <TextView style="@style/FormLabel" android:layout_marginTop="20dp" android:text="@string/categoria_caps"/>
+  <com.google.android.material.textfield.TextInputLayout style="@style/FormField" android:layout_marginTop="6dp" app:endIconMode="dropdown_menu"><AutoCompleteTextView android:id="@+id/spinnerCategoria" style="@style/FormInput" android:inputType="none"/></com.google.android.material.textfield.TextInputLayout>
+  <TextView style="@style/FormLabel" android:layout_marginTop="20dp" android:text="@string/local_armazenamento_caps"/>
+  <RadioGroup android:id="@+id/radioGroupArmazenamento" android:layout_width="match_parent" android:layout_height="76dp" android:layout_marginTop="6dp" android:orientation="horizontal">
+   <RadioButton android:id="@+id/radioButtonGeladeira" style="@style/StorageRadioButton" android:layout_marginEnd="4dp" android:drawableTop="@drawable/ic_kitchen_24" android:text="@string/geladeira"/>
+   <RadioButton android:id="@+id/radioButtonFreezer" style="@style/StorageRadioButton" android:layout_marginStart="4dp" android:layout_marginEnd="4dp" android:drawableTop="@drawable/ic_freezer_24" android:text="@string/freezer"/>
+   <RadioButton android:id="@+id/radioButtonArmario" style="@style/StorageRadioButton" android:layout_marginStart="4dp" android:drawableTop="@drawable/ic_armario_24" android:text="@string/armario"/>
+  </RadioGroup>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:background="@drawable/bg_checkbox_row" android:gravity="center_vertical" android:minHeight="56dp" android:orientation="horizontal" android:paddingLeft="8dp" android:paddingRight="14dp"><com.google.android.material.checkbox.MaterialCheckBox android:id="@+id/checkBoxAberto" android:layout_width="48dp" android:layout_height="48dp"/><LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/produto_aberto" android:textColor="@color/md_on_surface" android:textSize="15sp"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/apoio_produto_aberto" android:textColor="@color/md_on_surface_variant" android:textSize="12sp"/></LinearLayout></LinearLayout>
+ </LinearLayout>
 </ScrollView>

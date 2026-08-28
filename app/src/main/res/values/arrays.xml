@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="unidades">
+        <item>Selecione</item>
+        <item>Unidade</item>
+        <item>Pacote</item>
+        <item>Caixa</item>
+        <item>Pote</item>
+        <item>Garrafa</item>
+        <item>Lata</item>
+        <item>Kg</item>
+        <item>g</item>
+        <item>L</item>
+        <item>mL</item>
+    </string-array>
+
     <string-array name="nomes_produtos">
         <item>Leite Integral</item>
         <item>Arroz</item>

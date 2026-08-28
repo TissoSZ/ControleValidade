@@ -3,14 +3,15 @@ package com.example.controlevalidade;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,20 +21,28 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Calendar;
 import java.util.Locale;
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_NOME = "nome";
+    public static final String EXTRA_QUANTIDADE = "quantidade";
+    public static final String EXTRA_UNIDADE = "unidade";
     public static final String EXTRA_CATEGORIA = "categoria";
     public static final String EXTRA_VALIDADE = "validade";
     public static final String EXTRA_LOCAL = "local";
+    public static final String EXTRA_ABERTO = "aberto";
+    public static final String EXTRA_POSICAO = "posicao";
 
     private EditText editTextNome;
     private EditText editTextQuantidade;
     private EditText editTextDataValidade;
-    private Spinner spinnerCategoria;
+    private AutoCompleteTextView spinnerCategoria;
+    private AutoCompleteTextView spinnerUnidade;
     private RadioGroup radioGroupArmazenamento;
-    private CheckBox checkBoxAberto;
+    private MaterialCheckBox checkBoxAberto;
+    private int posicaoProduto = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +59,50 @@ public class MainActivity extends AppCompatActivity {
         editTextQuantidade = findViewById(R.id.editTextQuantidade);
         editTextDataValidade = findViewById(R.id.editTextDataValidade);
         spinnerCategoria = findViewById(R.id.spinnerCategoria);
+        spinnerUnidade = findViewById(R.id.spinnerUnidade);
         radioGroupArmazenamento = findViewById(R.id.radioGroupArmazenamento);
         checkBoxAberto = findViewById(R.id.checkBoxAberto);
-        Button buttonLimpar = findViewById(R.id.buttonLimpar);
-        Button buttonSalvar = findViewById(R.id.buttonSalvar);
 
-        ArrayAdapter<CharSequence> categoriaAdapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.categorias,
-                android.R.layout.simple_spinner_item
-        );
-        categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> categoriaAdapter = ArrayAdapter.createFromResource(this,
+                R.array.categorias, android.R.layout.simple_dropdown_item_1line);
         spinnerCategoria.setAdapter(categoriaAdapter);
+        ArrayAdapter<CharSequence> unidadeAdapter = ArrayAdapter.createFromResource(this,
+                R.array.unidades, android.R.layout.simple_dropdown_item_1line);
+        spinnerUnidade.setAdapter(unidadeAdapter);
+        spinnerUnidade.setText(getResources().getStringArray(R.array.unidades)[0], false);
 
         editTextDataValidade.setKeyListener(null);
         editTextDataValidade.setOnClickListener(view -> abrirSeletorDeData());
-        buttonLimpar.setOnClickListener(view -> limparFormulario());
-        buttonSalvar.setOnClickListener(view -> salvarProduto());
+
+        preencherFormularioParaEdicao();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cadastro, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        if (itemId == R.id.action_salvar) {
+            salvarProduto();
+            return true;
+        }
+
+        if (itemId == R.id.action_limpar) {
+            limparFormulario();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void abrirSeletorDeData() {
@@ -89,16 +125,19 @@ public class MainActivity extends AppCompatActivity {
         editTextDataValidade.setText("");
         radioGroupArmazenamento.clearCheck();
         checkBoxAberto.setChecked(false);
-        spinnerCategoria.setSelection(0);
+        spinnerCategoria.setText(getResources().getStringArray(R.array.categorias)[0], false);
+        spinnerUnidade.setText(getResources().getStringArray(R.array.unidades)[0], false);
         editTextNome.requestFocus();
-        Toast.makeText(this, R.string.formulario_limpo, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.campos_limpos, Toast.LENGTH_SHORT).show();
     }
 
     private void salvarProduto() {
         String nome = editTextNome.getText().toString().trim();
         String quantidade = editTextQuantidade.getText().toString().trim();
+        String unidade = spinnerUnidade.getText().toString();
         String dataValidade = editTextDataValidade.getText().toString().trim();
-        String categoria = spinnerCategoria.getSelectedItem().toString();
+        String categoria = spinnerCategoria.getText().toString();
+        boolean aberto = checkBoxAberto.isChecked();
         int armazenamentoSelecionadoId = radioGroupArmazenamento.getCheckedRadioButtonId();
 
         if (nome.isEmpty()) {
@@ -111,18 +150,23 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        if (unidade.isEmpty() || unidade.equals(getResources().getStringArray(R.array.unidades)[0])) {
+            Snackbar.make(findViewById(R.id.scrollViewCadastro), R.string.selecione_unidade, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
         if (dataValidade.isEmpty()) {
             mostrarErroComFoco(R.string.informe_data_validade, editTextDataValidade);
             return;
         }
 
         if (armazenamentoSelecionadoId == -1) {
-            Toast.makeText(this, R.string.selecione_armazenamento, Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.scrollViewCadastro), R.string.selecione_armazenamento, Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        if (spinnerCategoria.getSelectedItemPosition() == 0) {
-            Toast.makeText(this, R.string.selecione_categoria, Toast.LENGTH_SHORT).show();
+        if (categoria.isEmpty() || categoria.equals(getResources().getStringArray(R.array.categorias)[0])) {
+            Snackbar.make(findViewById(R.id.scrollViewCadastro), R.string.selecione_categoria, Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -131,15 +175,55 @@ public class MainActivity extends AppCompatActivity {
 
         Intent resultado = new Intent();
         resultado.putExtra(EXTRA_NOME, nome);
+        resultado.putExtra(EXTRA_QUANTIDADE, quantidade);
+        resultado.putExtra(EXTRA_UNIDADE, unidade);
         resultado.putExtra(EXTRA_CATEGORIA, categoria);
         resultado.putExtra(EXTRA_VALIDADE, dataValidade);
         resultado.putExtra(EXTRA_LOCAL, armazenamento);
+        resultado.putExtra(EXTRA_ABERTO, aberto);
+        if (posicaoProduto >= 0) {
+            resultado.putExtra(EXTRA_POSICAO, posicaoProduto);
+        }
         setResult(RESULT_OK, resultado);
         finish();
     }
 
+    private void preencherFormularioParaEdicao() {
+        Intent intent = getIntent();
+        if (!intent.hasExtra(EXTRA_POSICAO)) {
+            return;
+        }
+
+        posicaoProduto = intent.getIntExtra(EXTRA_POSICAO, -1);
+        editTextNome.setText(intent.getStringExtra(EXTRA_NOME));
+        editTextQuantidade.setText(intent.getStringExtra(EXTRA_QUANTIDADE));
+        spinnerUnidade.setText(intent.getStringExtra(EXTRA_UNIDADE), false);
+        editTextDataValidade.setText(intent.getStringExtra(EXTRA_VALIDADE));
+        selecionarCategoria(intent.getStringExtra(EXTRA_CATEGORIA));
+        selecionarLocalArmazenamento(intent.getStringExtra(EXTRA_LOCAL));
+        checkBoxAberto.setChecked(intent.getBooleanExtra(EXTRA_ABERTO, false));
+    }
+
+    private void selecionarCategoria(String categoria) {
+        if (categoria == null) {
+            return;
+        }
+
+        spinnerCategoria.setText(categoria, false);
+    }
+
+    private void selecionarLocalArmazenamento(String local) {
+        if (getString(R.string.geladeira).equals(local)) {
+            radioGroupArmazenamento.check(R.id.radioButtonGeladeira);
+        } else if (getString(R.string.freezer).equals(local)) {
+            radioGroupArmazenamento.check(R.id.radioButtonFreezer);
+        } else if (getString(R.string.armario).equals(local)) {
+            radioGroupArmazenamento.check(R.id.radioButtonArmario);
+        }
+    }
+
     private void mostrarErroComFoco(int mensagemId, View campo) {
-        Toast.makeText(this, mensagemId, Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.scrollViewCadastro), mensagemId, Snackbar.LENGTH_SHORT).show();
         campo.requestFocus();
     }
 
@@ -148,6 +232,17 @@ public class MainActivity extends AppCompatActivity {
         int paddingTop = view.getPaddingTop();
         int paddingRight = view.getPaddingRight();
         int paddingBottom = view.getPaddingBottom();
+        TypedValue actionBarSize = new TypedValue();
+        int actionBarHeight = getTheme().resolveAttribute(
+                androidx.appcompat.R.attr.actionBarSize,
+                actionBarSize,
+                true
+        ) ? TypedValue.complexToDimensionPixelSize(
+                actionBarSize.data,
+                getResources().getDisplayMetrics()
+        ) : 0;
+
+        view.setPadding(paddingLeft, paddingTop + actionBarHeight, paddingRight, paddingBottom);
 
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
             Insets insets = windowInsets.getInsets(
@@ -156,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
             );
             v.setPadding(
                     paddingLeft + insets.left,
-                    paddingTop,
+                    paddingTop + actionBarHeight,
                     paddingRight + insets.right,
                     paddingBottom + insets.bottom
             );

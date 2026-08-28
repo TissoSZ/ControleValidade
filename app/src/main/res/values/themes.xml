@@ -1,9 +1,41 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.ControleValidade" parent="Theme.Material3.DayNight">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<resources>
+    <style name="Base.Theme.ControleValidade" parent="Theme.Material3.Light">
+        <item name="colorPrimary">@color/md_primary</item><item name="colorOnPrimary">@color/md_on_primary</item>
+        <item name="colorSecondaryContainer">@color/md_secondary_container</item><item name="colorOnSecondaryContainer">@color/md_on_secondary_container</item>
+        <item name="colorSurface">@color/md_surface</item><item name="colorOnSurface">@color/md_on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/md_on_surface_variant</item><item name="colorOutline">@color/md_outline</item>
+        <item name="android:colorBackground">@color/md_surface</item><item name="android:windowBackground">@color/md_surface</item>
+        <item name="actionBarStyle">@style/Widget.ControleValidade.ActionBar</item>
+        <item name="actionModeStyle">@style/Widget.ControleValidade.ActionMode</item>
+        <item name="android:actionModeBackground">@color/md_secondary_container</item>
+        <item name="android:navigationBarColor">@color/md_surface</item><item name="android:statusBarColor">@color/md_surface</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
-
     <style name="Theme.ControleValidade" parent="Base.Theme.ControleValidade" />
+    <style name="Widget.ControleValidade.ActionBar" parent="Widget.Material3.ActionBar.Solid">
+        <item name="background">@color/md_surface</item><item name="titleTextStyle">@style/TextAppearance.ControleValidade.ActionBar</item>
+        <item name="elevation">0dp</item><item name="height">64dp</item>
+    </style>
+    <style name="Widget.ControleValidade.ActionMode" parent="Widget.AppCompat.ActionMode">
+        <item name="background">@color/md_secondary_container</item><item name="titleTextStyle">@style/TextAppearance.ControleValidade.ActionMode</item><item name="height">64dp</item>
+    </style>
+    <style name="TextAppearance.ControleValidade.ActionBar" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/md_on_surface</item><item name="android:textSize">22sp</item>
+    </style>
+    <style name="TextAppearance.ControleValidade.ActionMode" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/md_on_secondary_container</item><item name="android:textSize">20sp</item>
+    </style>
+    <style name="FormLabel"><item name="android:layout_width">wrap_content</item><item name="android:layout_height">wrap_content</item><item name="android:textColor">@color/md_primary</item><item name="android:textSize">12sp</item><item name="android:textStyle">bold</item><item name="android:letterSpacing">0.04</item></style>
+    <style name="FormField" parent="Widget.Material3.TextInputLayout.OutlinedBox"><item name="android:layout_width">match_parent</item><item name="android:layout_height">wrap_content</item><item name="boxStrokeColor">@color/md_primary</item><item name="boxBackgroundColor">@color/white</item><item name="boxCornerRadiusTopStart">12dp</item><item name="boxCornerRadiusTopEnd">12dp</item><item name="boxCornerRadiusBottomStart">12dp</item><item name="boxCornerRadiusBottomEnd">12dp</item></style>
+    <style name="FormInput"><item name="android:layout_width">match_parent</item><item name="android:layout_height">52dp</item><item name="android:gravity">center_vertical</item><item name="android:paddingStart">16dp</item><item name="android:paddingEnd">16dp</item><item name="android:paddingTop">0dp</item><item name="android:paddingBottom">0dp</item><item name="android:textSize">16sp</item></style>
+    <style name="StorageButton" parent="Widget.Material3.Button.OutlinedButton.Icon"><item name="android:textSize">12sp</item><item name="iconGravity">textTop</item><item name="iconPadding">4dp</item><item name="cornerRadius">14dp</item><item name="strokeColor">@color/md_outline_variant</item></style>
+    <style name="StorageRadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:layout_width">0dp</item><item name="android:layout_height">76dp</item><item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item><item name="android:background">@drawable/bg_storage_radio</item>
+        <item name="android:drawableTint">@color/storage_content_color</item><item name="android:drawablePadding">6dp</item>
+        <item name="android:gravity">center</item><item name="android:paddingLeft">8dp</item><item name="android:paddingTop">10dp</item><item name="android:paddingRight">8dp</item><item name="android:paddingBottom">10dp</item>
+        <item name="android:includeFontPadding">false</item><item name="android:textColor">@color/storage_content_color</item><item name="android:textSize">13sp</item><item name="android:textStyle">bold</item>
+    </style>
+    <style name="AboutLabel"><item name="android:layout_width">match_parent</item><item name="android:layout_height">wrap_content</item><item name="android:textColor">@color/md_on_surface_variant</item><item name="android:textSize">11sp</item></style>
+    <style name="AboutValue"><item name="android:layout_width">match_parent</item><item name="android:layout_height">wrap_content</item><item name="android:layout_marginTop">2dp</item><item name="android:textColor">@color/md_on_surface</item><item name="android:textSize">14sp</item><item name="android:lineSpacingExtra">3dp</item></style>
 </resources>
