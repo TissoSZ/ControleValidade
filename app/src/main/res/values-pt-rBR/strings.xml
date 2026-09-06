@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Controle de Validade</string><string name="cadastro_produto">Cadastro de Produto</string><string name="nome_produto">Nome do produto</string>
+    <string name="nome_produto_caps">NOME DO PRODUTO</string><string name="quantidade_caps">QUANTIDADE</string><string name="unidade_caps">UNIDADE</string><string name="data_validade_caps">DATA DE VALIDADE</string><string name="categoria_caps">CATEGORIA</string><string name="local_armazenamento_caps">LOCAL DE ARMAZENAMENTO</string>
+    <string name="exemplo_nome">Ex.: Leite integral 1L</string><string name="quantidade">Quantidade</string><string name="data_validade">Data de validade</string><string name="formato_data">dd/mm/aaaa</string><string name="categoria">Categoria</string>
+    <string name="local_armazenamento">Onde o produto está armazenado?</string><string name="geladeira">Geladeira</string><string name="freezer">Freezer</string><string name="armario">Armário</string>
+    <string name="produto_aberto">Produto já foi aberto</string><string name="apoio_produto_aberto">Reduz o prazo de consumo recomendado</string><string name="limpar">Limpar</string><string name="salvar">Salvar</string>
+    <string-array name="categorias"><item>Selecione uma categoria</item><item>Alimento</item><item>Bebida</item><item>Higiene</item><item>Limpeza</item><item>Outro</item></string-array>
+    <string name="formulario_limpo">Formulário limpo.</string><string name="campos_limpos">Campos limpos</string>
+    <string name="informe_nome">Informe o nome do produto.</string><string name="informe_quantidade">Informe a quantidade.</string><string name="informe_data_validade">Informe a data de validade.</string>
+    <string name="selecione_armazenamento">Selecione onde o produto está armazenado.</string><string name="selecione_categoria">Selecione uma categoria.</string><string name="selecione_unidade">Selecione uma unidade.</string>
+    <string name="titulo_produto_com_quantidade">%1$s - %2$s %3$s</string><string name="sim">Sim</string><string name="nao">Não</string>
+    <string name="produto_cadastrado">Produto cadastrado: %1$s\nQuantidade: %2$s | Categoria: %3$s\nArmazenamento: %4$s | Aberto: %5$s</string>
+    <string name="categoria_produto">Categoria: %1$s</string><string name="validade_produto">Validade: %1$s</string><string name="local_produto">Local: %1$s</string>
+    <string name="produto_selecionado">Produto: %1$s\nValidade: %2$s</string><string name="um_produto_selecionado">1 selecionado</string>
+    <string name="dica_lista">Pressione e segure um item para editar ou excluir.</string><string name="nenhum_produto">Nenhum produto cadastrado</string>
+    <string name="descricao_estado_vazio">Cadastre os alimentos e produtos que você guarda na geladeira, no freezer ou no armário para acompanhar a validade.</string><string name="icone_estado_vazio">□</string>
+    <string name="adicionar_produto">Adicionar produto</string><string name="produto_excluido">Produto excluído</string><string name="produto_salvo">Produto salvo</string><string name="produto_atualizado">Produto atualizado</string>
+    <string name="status_vencido">Vencido</string><string name="status_vence_hoje">Vence hoje</string><string name="status_vence_amanha">Vence amanhã</string><string name="status_vence_dias">Vence em %1$d dias</string><string name="status_ok">Ok</string>
+    <string name="adicionar">Adicionar</string><string name="sobre">Sobre</string><string name="configuracoes">Configurações</string><string name="editar">Editar</string><string name="excluir">Excluir</string><string name="titulo_listagem">Produtos</string>
+    <string name="titulo_autoria">Sobre o Aplicativo</string><string name="instituicao_utfpr">Universidade Tecnológica Federal do Paraná - UTFPR</string><string name="descricao_logo_utfpr">Logo da Universidade Tecnológica Federal do Paraná</string>
+    <string name="rotulo_aluno">Aluno</string><string name="nome_aluno">Matheus Espindola dos Santos</string><string name="rotulo_curso_disciplina">Curso/Disciplina</string><string name="rotulo_disciplina">Disciplina</string>
+    <string name="curso_disciplina">CETEJ36 - Desenvolvimento Java Para Dispositivos Móveis - JAVA_XXXIII (2025_02)</string><string name="rotulo_email">E-mail</string><string name="email_aluno">matheussantos.1996@alunos.utfpr.edu.br</string>
+    <string name="rotulo_descricao">Descrição do aplicativo</string><string name="descricao_aplicativo">Aplicativo para cadastro e controle da validade de alimentos e produtos domésticos, auxiliando na organização de itens armazenados em locais como geladeira, freezer e armário.</string>
+    <string name="sobre_controle_validade">Sobre o ControleValidade</string><string name="versao_app">Versão 1.0 · 2025</string>
+    <string name="titulo_configuracoes">Configurações</string><string name="ordenacao_produtos">Ordenação dos produtos</string><string name="descricao_ordenacao">Escolha como os produtos são ordenados na lista.</string>
+    <string name="ordenar_validade">Data de validade</string><string name="ordenar_validade_descricao">Data de validade — vencimento mais próximo primeiro</string><string name="ordenar_nome">Nome</string><string name="ordenar_nome_descricao">Nome — ordem alfabética</string>
+    <string name="ordenar_categoria">Categoria</string><string name="ordenar_categoria_descricao">Categoria — ordem alfabética</string><string name="restaurar_padrao">Restaurar padrão</string>
+    <string name="configuracao_salva">Configuração salva</string><string name="configuracao_restaurada">Configuração padrão restaurada</string>
+    <!-- Recursos mantidos para os fragments gerados pelo template. -->
+    <string name="action_settings">Configurações</string><string name="first_fragment_label">Primeiro Fragment</string><string name="second_fragment_label">Segundo Fragment</string><string name="next">Próximo</string><string name="previous">Anterior</string><string name="lorem_ipsum">Conteúdo de exemplo do template.</string>
+</resources>

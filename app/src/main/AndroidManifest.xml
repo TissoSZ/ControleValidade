@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ControleValidade">
         <activity
+            android:name=".ConfiguracoesActivity"
+            android:exported="false"
+            android:label="@string/titulo_configuracoes" />
+        <activity
             android:name=".AutoriaActivity"
             android:exported="false"
             android:label="@string/titulo_autoria" />

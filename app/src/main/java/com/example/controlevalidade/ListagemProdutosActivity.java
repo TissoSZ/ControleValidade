@@ -16,6 +16,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.text.Collator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 public class ListagemProdutosActivity extends AppCompatActivity {
 
@@ -24,6 +31,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
 
     private ArrayList<Produto> produtos;
     private ProdutoAdapter produtoAdapter;
+    private AppPreferences appPreferences;
     private int posicaoProdutoSelecionado = -1;
 
     @Override
@@ -37,6 +45,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
         aplicarInsets(layoutListagem);
 
         produtos = new ArrayList<>();
+        appPreferences = new AppPreferences(this);
         produtoAdapter = new ProdutoAdapter(this, produtos);
         listViewProdutos.setAdapter(produtoAdapter);
         atualizarEstadoVazio();
@@ -55,6 +64,14 @@ public class ListagemProdutosActivity extends AppCompatActivity {
             posicaoProdutoSelecionado = position;
             return startSupportActionMode(actionModeCallback) != null;
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (produtoAdapter != null) {
+            ordenarProdutos();
+        }
     }
 
     @Override
@@ -79,6 +96,11 @@ public class ListagemProdutosActivity extends AppCompatActivity {
 
         if (itemId == R.id.action_sobre) {
             startActivity(new Intent(this, AutoriaActivity.class));
+            return true;
+        }
+
+        if (itemId == R.id.action_configuracoes) {
+            startActivity(new Intent(this, ConfiguracoesActivity.class));
             return true;
         }
 
@@ -137,7 +159,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
                     nome, quantidade, unidade, categoria, validade, local, aberto
             );
             produtos.add(produto);
-            produtoAdapter.notifyDataSetChanged();
+            ordenarProdutos();
             atualizarEstadoVazio();
             Snackbar.make(findViewById(R.id.layoutListagem), R.string.produto_salvo, Snackbar.LENGTH_SHORT).show();
             return;
@@ -157,7 +179,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
             produto.setValidade(validade);
             produto.setLocalArmazenamento(local);
             produto.setAberto(aberto);
-            produtoAdapter.notifyDataSetChanged();
+            ordenarProdutos();
             atualizarEstadoVazio();
             Snackbar.make(findViewById(R.id.layoutListagem), R.string.produto_atualizado, Snackbar.LENGTH_SHORT).show();
         }
@@ -171,7 +193,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.menu_contextual_produto, menu);
-            mode.setTitle("1 selecionado");
+            mode.setTitle(R.string.um_produto_selecionado);
             return true;
         }
 
@@ -214,6 +236,42 @@ public class ListagemProdutosActivity extends AppCompatActivity {
         boolean vazio = produtos.isEmpty();
         findViewById(R.id.estadoVazio).setVisibility(vazio ? View.VISIBLE : View.GONE);
         findViewById(R.id.conteudoLista).setVisibility(vazio ? View.GONE : View.VISIBLE);
+    }
+
+    private void ordenarProdutos() {
+        String sortOrder = appPreferences.getSortOrder();
+        Comparator<Produto> comparator;
+
+        if (AppPreferences.SORT_NAME.equals(sortOrder)) {
+            comparator = compararTexto(Produto::getNome);
+        } else if (AppPreferences.SORT_CATEGORY.equals(sortOrder)) {
+            comparator = compararTexto(Produto::getCategoria)
+                    .thenComparing(compararTexto(Produto::getNome));
+        } else {
+            comparator = Comparator.<Produto>comparingLong(
+                    produto -> converterDataParaOrdenacao(produto.getValidade())
+            ).thenComparing(compararTexto(Produto::getNome));
+        }
+
+        Collections.sort(produtos, comparator);
+        produtoAdapter.notifyDataSetChanged();
+    }
+
+    private Comparator<Produto> compararTexto(java.util.function.Function<Produto, String> campo) {
+        Collator collator = Collator.getInstance(Locale.getDefault());
+        collator.setStrength(Collator.PRIMARY);
+        return (primeiro, segundo) -> collator.compare(campo.apply(primeiro), campo.apply(segundo));
+    }
+
+    private long converterDataParaOrdenacao(String validade) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", Locale.ROOT);
+        formato.setLenient(false);
+        try {
+            Date data = formato.parse(validade);
+            return data == null ? Long.MAX_VALUE : data.getTime();
+        } catch (ParseException exception) {
+            return Long.MAX_VALUE;
+        }
     }
 
     private void aplicarInsets(View view) {

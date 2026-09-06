@@ -1,70 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string-array name="unidades">
-        <item>Selecione</item>
-        <item>Unidade</item>
-        <item>Pacote</item>
-        <item>Caixa</item>
-        <item>Pote</item>
-        <item>Garrafa</item>
-        <item>Lata</item>
-        <item>Kg</item>
-        <item>g</item>
-        <item>L</item>
-        <item>mL</item>
+        <item>Select</item><item>Unit</item><item>Package</item><item>Box</item><item>Container</item><item>Bottle</item><item>Can</item><item>kg</item><item>g</item><item>L</item><item>mL</item>
     </string-array>
-
     <string-array name="nomes_produtos">
-        <item>Leite Integral</item>
-        <item>Arroz</item>
-        <item>Iogurte Natural</item>
-        <item>Carne Moída</item>
-        <item>Sabonete</item>
-        <item>Shampoo</item>
-        <item>Detergente</item>
-        <item>Água Sanitária</item>
-        <item>Queijo Mussarela</item>
-        <item>Feijão</item>
+        <item>Whole Milk</item><item>Rice</item><item>Plain Yogurt</item><item>Ground Beef</item><item>Soap</item><item>Shampoo</item><item>Detergent</item><item>Bleach</item><item>Mozzarella Cheese</item><item>Beans</item>
     </string-array>
-
     <string-array name="categorias_produtos">
-        <item>Alimento</item>
-        <item>Alimento</item>
-        <item>Alimento</item>
-        <item>Alimento</item>
-        <item>Higiene</item>
-        <item>Higiene</item>
-        <item>Limpeza</item>
-        <item>Limpeza</item>
-        <item>Alimento</item>
-        <item>Alimento</item>
+        <item>Food</item><item>Food</item><item>Food</item><item>Food</item><item>Personal Care</item><item>Personal Care</item><item>Cleaning</item><item>Cleaning</item><item>Food</item><item>Food</item>
     </string-array>
-
     <string-array name="validades_produtos">
-        <item>20/08/2026</item>
-        <item>10/12/2026</item>
-        <item>18/08/2026</item>
-        <item>17/08/2026</item>
-        <item>15/01/2027</item>
-        <item>25/02/2027</item>
-        <item>30/11/2026</item>
-        <item>05/10/2026</item>
-        <item>19/08/2026</item>
-        <item>20/01/2027</item>
+        <item>20/08/2026</item><item>10/12/2026</item><item>18/08/2026</item><item>17/08/2026</item><item>15/01/2027</item><item>25/02/2027</item><item>30/11/2026</item><item>05/10/2026</item><item>19/08/2026</item><item>20/01/2027</item>
     </string-array>
-
     <string-array name="locais_produtos">
-        <item>Geladeira</item>
-        <item>Armário</item>
-        <item>Geladeira</item>
-        <item>Freezer</item>
-        <item>Armário</item>
-        <item>Armário</item>
-        <item>Armário</item>
-        <item>Armário</item>
-        <item>Geladeira</item>
-        <item>Armário</item>
+        <item>Refrigerator</item><item>Pantry/Cabinet</item><item>Refrigerator</item><item>Freezer</item><item>Pantry/Cabinet</item><item>Pantry/Cabinet</item><item>Pantry/Cabinet</item><item>Pantry/Cabinet</item><item>Refrigerator</item><item>Pantry/Cabinet</item>
     </string-array>
-
 </resources>
