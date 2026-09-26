@@ -10,6 +10,8 @@ import android.widget.ListView;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import java.util.List;
 import androidx.appcompat.view.ActionMode;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -32,7 +34,8 @@ public class ListagemProdutosActivity extends AppCompatActivity {
     private ArrayList<Produto> produtos;
     private ProdutoAdapter produtoAdapter;
     private AppPreferences appPreferences;
-    private int posicaoProdutoSelecionado = -1;
+    private Produto produtoSelecionado;
+    private ProdutoDao produtoDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
 
         aplicarInsets(layoutListagem);
 
+        produtoDao = ProdutoDatabase.getInstance(this).produtoDao();
         produtos = new ArrayList<>();
         appPreferences = new AppPreferences(this);
         produtoAdapter = new ProdutoAdapter(this, produtos);
@@ -61,8 +65,9 @@ public class ListagemProdutosActivity extends AppCompatActivity {
         });
 
         listViewProdutos.setOnItemLongClickListener((parent, view, position, id) -> {
-            posicaoProdutoSelecionado = position;
-            return startSupportActionMode(actionModeCallback) != null;
+            ActionMode mode = startSupportActionMode(actionModeCallback);
+            produtoSelecionado = produtos.get(position);
+            return mode != null;
         });
     }
 
@@ -70,7 +75,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (produtoAdapter != null) {
-            ordenarProdutos();
+            carregarProdutos();
         }
     }
 
@@ -115,13 +120,13 @@ public class ListagemProdutosActivity extends AppCompatActivity {
 
     @SuppressWarnings("deprecation")
     private void abrirCadastroParaEdicao() {
-        if (!posicaoValida(posicaoProdutoSelecionado)) {
+        if (produtoSelecionado == null) {
             return;
         }
 
-        Produto produto = produtos.get(posicaoProdutoSelecionado);
+        Produto produto = produtoSelecionado;
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_POSICAO, posicaoProdutoSelecionado);
+        intent.putExtra(MainActivity.EXTRA_ID, produto.getId());
         intent.putExtra(MainActivity.EXTRA_NOME, produto.getNome());
         intent.putExtra(MainActivity.EXTRA_QUANTIDADE, produto.getQuantidade());
         intent.putExtra(MainActivity.EXTRA_UNIDADE, produto.getUnidade());
@@ -154,39 +159,68 @@ public class ListagemProdutosActivity extends AppCompatActivity {
             return;
         }
 
+        Produto produto = new Produto(nome, quantidade, unidade, categoria, validade, local, aberto);
         if (requestCode == REQUEST_INCLUIR_PRODUTO) {
-            Produto produto = new Produto(
-                    nome, quantidade, unidade, categoria, validade, local, aberto
-            );
-            produtos.add(produto);
-            ordenarProdutos();
-            atualizarEstadoVazio();
-            Snackbar.make(findViewById(R.id.layoutListagem), R.string.produto_salvo, Snackbar.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (requestCode == REQUEST_EDITAR_PRODUTO) {
-            int posicao = data.getIntExtra(MainActivity.EXTRA_POSICAO, -1);
-            if (!posicaoValida(posicao)) {
-                return;
+            executarGravacao(() -> produtoDao.inserir(produto), R.string.produto_salvo);
+        } else if (requestCode == REQUEST_EDITAR_PRODUTO) {
+            produto.setId(data.getLongExtra(MainActivity.EXTRA_ID, 0));
+            if (produto.getId() > 0) {
+                executarGravacao(() -> produtoDao.atualizar(produto), R.string.produto_atualizado);
             }
-
-            Produto produto = produtos.get(posicao);
-            produto.setNome(nome);
-            produto.setQuantidade(quantidade);
-            produto.setUnidade(unidade);
-            produto.setCategoria(categoria);
-            produto.setValidade(validade);
-            produto.setLocalArmazenamento(local);
-            produto.setAberto(aberto);
-            ordenarProdutos();
-            atualizarEstadoVazio();
-            Snackbar.make(findViewById(R.id.layoutListagem), R.string.produto_atualizado, Snackbar.LENGTH_SHORT).show();
         }
     }
 
-    private boolean posicaoValida(int posicao) {
-        return posicao >= 0 && posicao < produtos.size();
+    private void carregarProdutos() {
+        ProdutoDatabase.executor.execute(() -> {
+            try {
+                List<Produto> resultado = produtoDao.consultarTodos();
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    produtos.clear();
+                    produtos.addAll(resultado);
+                    ordenarProdutos();
+                    atualizarEstadoVazio();
+                });
+            } catch (RuntimeException exception) {
+                mostrarMensagem(R.string.erro_consultar_produtos);
+            }
+        });
+    }
+
+    private interface Gravacao {
+        long executar();
+    }
+
+    private void executarGravacao(Gravacao gravacao, int mensagemSucesso) {
+        ProdutoDatabase.executor.execute(() -> {
+            try {
+                if (gravacao.executar() > 0) {
+                    carregarProdutos();
+                    mostrarMensagem(mensagemSucesso);
+                } else {
+                    mostrarMensagem(R.string.erro_gravar_produto);
+                }
+            } catch (RuntimeException exception) {
+                mostrarMensagem(R.string.erro_gravar_produto);
+            }
+        });
+    }
+
+    private void mostrarMensagem(int mensagem) {
+        runOnUiThread(() -> {
+            if (isFinishing() || isDestroyed()) return;
+            Snackbar.make(findViewById(R.id.layoutListagem), mensagem, Snackbar.LENGTH_LONG).show();
+        });
+    }
+
+    private void confirmarExclusao(Produto produto) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.confirmar_exclusao)
+                .setMessage(getString(R.string.mensagem_exclusao, produto.getNome()))
+                .setNegativeButton(R.string.cancelar, null)
+                .setPositiveButton(R.string.excluir, (dialog, which) ->
+                        executarGravacao(() -> produtoDao.excluir(produto), R.string.produto_excluido))
+                .show();
     }
 
     private final ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
@@ -213,11 +247,8 @@ public class ListagemProdutosActivity extends AppCompatActivity {
             }
 
             if (itemId == R.id.action_excluir) {
-                if (posicaoValida(posicaoProdutoSelecionado)) {
-                    produtos.remove(posicaoProdutoSelecionado);
-                    produtoAdapter.notifyDataSetChanged();
-                    atualizarEstadoVazio();
-                    Snackbar.make(findViewById(R.id.layoutListagem), R.string.produto_excluido, Snackbar.LENGTH_SHORT).show();
+                if (produtoSelecionado != null) {
+                    confirmarExclusao(produtoSelecionado);
                 }
                 mode.finish();
                 return true;
@@ -228,7 +259,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            posicaoProdutoSelecionado = -1;
+            produtoSelecionado = null;
         }
     };
 
@@ -245,7 +276,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
         if (AppPreferences.SORT_NAME.equals(sortOrder)) {
             comparator = compararTexto(Produto::getNome);
         } else if (AppPreferences.SORT_CATEGORY.equals(sortOrder)) {
-            comparator = compararTexto(Produto::getCategoria)
+            comparator = compararTexto(produto -> ProdutoValores.categoria(this, produto.getCategoria()))
                     .thenComparing(compararTexto(Produto::getNome));
         } else {
             comparator = Comparator.<Produto>comparingLong(
@@ -258,7 +289,7 @@ public class ListagemProdutosActivity extends AppCompatActivity {
     }
 
     private Comparator<Produto> compararTexto(java.util.function.Function<Produto, String> campo) {
-        Collator collator = Collator.getInstance(Locale.getDefault());
+        Collator collator = Collator.getInstance(getResources().getConfiguration().getLocales().get(0));
         collator.setStrength(Collator.PRIMARY);
         return (primeiro, segundo) -> collator.compare(campo.apply(primeiro), campo.apply(segundo));
     }

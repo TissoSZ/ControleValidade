@@ -27,6 +27,10 @@
     <string name="ordenar_validade">Data de validade</string><string name="ordenar_validade_descricao">Data de validade — vencimento mais próximo primeiro</string><string name="ordenar_nome">Nome</string><string name="ordenar_nome_descricao">Nome — ordem alfabética</string>
     <string name="ordenar_categoria">Categoria</string><string name="ordenar_categoria_descricao">Categoria — ordem alfabética</string><string name="restaurar_padrao">Restaurar padrão</string>
     <string name="configuracao_salva">Configuração salva</string><string name="configuracao_restaurada">Configuração padrão restaurada</string>
-    <!-- Recursos mantidos para os fragments gerados pelo template. -->
     <string name="action_settings">Configurações</string><string name="first_fragment_label">Primeiro Fragment</string><string name="second_fragment_label">Segundo Fragment</string><string name="next">Próximo</string><string name="previous">Anterior</string><string name="lorem_ipsum">Conteúdo de exemplo do template.</string>
+    <string name="confirmar_exclusao">Excluir produto?</string>
+    <string name="mensagem_exclusao">Excluir “%1$s”? Esta ação não pode ser desfeita.</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="erro_consultar_produtos">Não foi possível carregar os produtos. Reabra esta tela para tentar novamente.</string>
+    <string name="erro_gravar_produto">Não foi possível salvar a alteração. Tente novamente.</string>
 </resources>

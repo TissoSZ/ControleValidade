@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.AutoCompleteTextView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_VALIDADE = "validade";
     public static final String EXTRA_LOCAL = "local";
     public static final String EXTRA_ABERTO = "aberto";
-    public static final String EXTRA_POSICAO = "posicao";
+    public static final String EXTRA_ID = "produto_id";
 
     private EditText editTextNome;
     private EditText editTextQuantidade;
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private AutoCompleteTextView spinnerUnidade;
     private RadioGroup radioGroupArmazenamento;
     private MaterialCheckBox checkBoxAberto;
-    private int posicaoProduto = -1;
+    private long produtoId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
         editTextDataValidade.setKeyListener(null);
         editTextDataValidade.setOnClickListener(view -> abrirSeletorDeData());
 
-        preencherFormularioParaEdicao();
+        produtoId = getIntent().getLongExtra(EXTRA_ID, 0);
+        if (savedInstanceState == null) {
+            preencherFormularioParaEdicao();
+        }
     }
 
     @Override
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (datePicker, ano, mes, dia) -> editTextDataValidade.setText(
-                        String.format(Locale.getDefault(), "%02d/%02d/%04d", dia, mes + 1, ano)
+                        String.format(Locale.ROOT, "%02d/%02d/%04d", dia, mes + 1, ano)
                 ),
                 hoje.get(Calendar.YEAR),
                 hoje.get(Calendar.MONTH),
@@ -134,9 +136,9 @@ public class MainActivity extends AppCompatActivity {
     private void salvarProduto() {
         String nome = editTextNome.getText().toString().trim();
         String quantidade = editTextQuantidade.getText().toString().trim();
-        String unidade = spinnerUnidade.getText().toString();
+        String unidade = ProdutoValores.codigoUnidade(this, spinnerUnidade.getText().toString());
         String dataValidade = editTextDataValidade.getText().toString().trim();
-        String categoria = spinnerCategoria.getText().toString();
+        String categoria = ProdutoValores.codigoCategoria(this, spinnerCategoria.getText().toString());
         boolean aberto = checkBoxAberto.isChecked();
         int armazenamentoSelecionadoId = radioGroupArmazenamento.getCheckedRadioButtonId();
 
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (unidade.isEmpty() || unidade.equals(getResources().getStringArray(R.array.unidades)[0])) {
+        if (unidade.isEmpty()) {
             Snackbar.make(findViewById(R.id.scrollViewCadastro), R.string.selecione_unidade, Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -165,13 +167,14 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (categoria.isEmpty() || categoria.equals(getResources().getStringArray(R.array.categorias)[0])) {
+        if (categoria.isEmpty()) {
             Snackbar.make(findViewById(R.id.scrollViewCadastro), R.string.selecione_categoria, Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        RadioButton radioButtonArmazenamento = findViewById(armazenamentoSelecionadoId);
-        String armazenamento = radioButtonArmazenamento.getText().toString();
+        String armazenamento = armazenamentoSelecionadoId == R.id.radioButtonFreezer
+                ? ProdutoValores.FREEZER : armazenamentoSelecionadoId == R.id.radioButtonArmario
+                ? ProdutoValores.ARMARIO : ProdutoValores.GELADEIRA;
 
         Intent resultado = new Intent();
         resultado.putExtra(EXTRA_NOME, nome);
@@ -181,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
         resultado.putExtra(EXTRA_VALIDADE, dataValidade);
         resultado.putExtra(EXTRA_LOCAL, armazenamento);
         resultado.putExtra(EXTRA_ABERTO, aberto);
-        if (posicaoProduto >= 0) {
-            resultado.putExtra(EXTRA_POSICAO, posicaoProduto);
+        if (produtoId > 0) {
+            resultado.putExtra(EXTRA_ID, produtoId);
         }
         setResult(RESULT_OK, resultado);
         finish();
@@ -190,14 +193,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void preencherFormularioParaEdicao() {
         Intent intent = getIntent();
-        if (!intent.hasExtra(EXTRA_POSICAO)) {
+        if (!intent.hasExtra(EXTRA_ID)) {
             return;
         }
 
-        posicaoProduto = intent.getIntExtra(EXTRA_POSICAO, -1);
         editTextNome.setText(intent.getStringExtra(EXTRA_NOME));
         editTextQuantidade.setText(intent.getStringExtra(EXTRA_QUANTIDADE));
-        spinnerUnidade.setText(intent.getStringExtra(EXTRA_UNIDADE), false);
+        spinnerUnidade.setText(ProdutoValores.unidade(this, intent.getStringExtra(EXTRA_UNIDADE)), false);
         editTextDataValidade.setText(intent.getStringExtra(EXTRA_VALIDADE));
         selecionarCategoria(intent.getStringExtra(EXTRA_CATEGORIA));
         selecionarLocalArmazenamento(intent.getStringExtra(EXTRA_LOCAL));
@@ -209,15 +211,15 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        spinnerCategoria.setText(categoria, false);
+        spinnerCategoria.setText(ProdutoValores.categoria(this, categoria), false);
     }
 
     private void selecionarLocalArmazenamento(String local) {
-        if (getString(R.string.geladeira).equals(local)) {
+        if (ProdutoValores.GELADEIRA.equals(local)) {
             radioGroupArmazenamento.check(R.id.radioButtonGeladeira);
-        } else if (getString(R.string.freezer).equals(local)) {
+        } else if (ProdutoValores.FREEZER.equals(local)) {
             radioGroupArmazenamento.check(R.id.radioButtonFreezer);
-        } else if (getString(R.string.armario).equals(local)) {
+        } else if (ProdutoValores.ARMARIO.equals(local)) {
             radioGroupArmazenamento.check(R.id.radioButtonArmario);
         }
     }

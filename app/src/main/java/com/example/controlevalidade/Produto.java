@@ -1,6 +1,21 @@
 package com.example.controlevalidade;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "produtos")
 public class Produto {
+
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     private String nome;
     private String quantidade;

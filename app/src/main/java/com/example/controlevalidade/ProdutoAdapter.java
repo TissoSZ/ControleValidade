@@ -50,11 +50,11 @@ public class ProdutoAdapter extends ArrayAdapter<Produto> {
         if (produto != null) {
             textViewNome.setText(getContext().getString(
                     R.string.titulo_produto_com_quantidade,
-                    produto.getNome(), produto.getQuantidade(), produto.getUnidade()
+                    produto.getNome(), produto.getQuantidade(), ProdutoValores.unidade(getContext(), produto.getUnidade())
             ));
-            textViewCategoria.setText(produto.getCategoria());
+            textViewCategoria.setText(ProdutoValores.categoria(getContext(), produto.getCategoria()));
             textViewValidade.setText(produto.getValidade());
-            textViewLocal.setText(produto.getLocalArmazenamento());
+            textViewLocal.setText(ProdutoValores.local(getContext(), produto.getLocalArmazenamento()));
             int localIcon = iconeLocal(produto.getLocalArmazenamento());
             imageViewLocal.setImageResource(localIcon);
             imageViewLocalPequeno.setImageResource(localIcon);
@@ -65,8 +65,8 @@ public class ProdutoAdapter extends ArrayAdapter<Produto> {
     }
 
     private int iconeLocal(String local) {
-        if (getContext().getString(R.string.freezer).equals(local)) return R.drawable.ic_freezer_24;
-        if (getContext().getString(R.string.armario).equals(local)) return R.drawable.ic_armario_24;
+        if (ProdutoValores.FREEZER.equals(local)) return R.drawable.ic_freezer_24;
+        if (ProdutoValores.ARMARIO.equals(local)) return R.drawable.ic_armario_24;
         return R.drawable.ic_kitchen_24;
     }
 
